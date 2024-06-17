@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class LatestMeasurement extends BaseWidget
 {
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = '1';
 
     protected function getTableQuery(): Builder
     {

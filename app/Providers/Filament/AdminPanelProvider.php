@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Blade;
 use Orion\FilamentBackup\BackupPlugin;
 use EightyNine\Approvals\ApprovalPlugin;
 use Filament\Http\Middleware\Authenticate;
-use App\Filament\Widgets\LatestMeasurement;
 use Rmsramos\Activitylog\ActivitylogPlugin;
 use LaraZeus\DynamicDashboard\Models\Layout;
 use LaraZeus\DynamicDashboard\Models\Columns;
@@ -50,6 +49,7 @@ use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use JulioMotol\FilamentPasswordConfirmation\FilamentPasswordConfirmationPlugin;
+use App\Filament\Widgets\LatestMeasurement;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -82,14 +82,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                LatestPatrol::class,
+                LatestMeasurement::class,
                 UserStatsOverview::class,
                 DailyPatrolChart::class,
                 DailyPatrolChart_2::class,
                 DailyPatrolChart_3::class,
                 DailyPatrolChart_4::class,
-                LatestPatrol::class,
-                LatestMeasurement::class,
-            ])
+            ])                       
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -173,15 +173,6 @@ class AdminPanelProvider extends PanelProvider
                 //     //->registration()
                 //     ->useOTPActivation(),
             ])
-            // ->userMenuItems([
-            //     'profile' => MenuItem::make()
-            //         ->label(fn() => auth()->user()->name)
-            //         ->url(fn (): string => EditProfilePage::getUrl())
-            //         ->icon('heroicon-m-user-circle')
-            //         // If you are using tenancy, check with the visible method where ->company() is the relation between the user and tenancy model as you called
-            //         // ->visible(function (): bool {
-            //         //     return auth()->user()->company()->exists();
-            //         // })
             ->plugin(
                 new Lockscreen()
                 )
@@ -190,9 +181,5 @@ class AdminPanelProvider extends PanelProvider
                  Locker::class,
                  RedirectIfNotInstalled::class, // <- Add this
             ]);
-            // ->renderHook(
-            //     'panels::body.end',
-            //     fn (): string => auth()->check() ? Blade::render('@livewire(\'livewire-ui-modal\')') : '',
-            // );
     }
 }

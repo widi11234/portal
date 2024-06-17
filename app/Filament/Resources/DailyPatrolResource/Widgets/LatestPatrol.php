@@ -10,7 +10,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestPatrol extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = '1';
 
     public function table(Table $table): Table
     {
@@ -22,10 +22,10 @@ class LatestPatrol extends BaseWidget
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('description_problem')
                     ->label('Description of Problem'),
-                TextColumn::make('area')
-                    ->label('Area'),
-                TextColumn::make('location')
-                    ->label('Location'),
+                // TextColumn::make('area')
+                //     ->label('Area'),
+                // TextColumn::make('location')
+                //     ->label('Location'),
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()

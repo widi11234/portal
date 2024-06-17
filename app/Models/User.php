@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Notifications\Notification;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
+use Tapp\FilamentInvite\Notifications\SetPassword;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Edwink\FilamentUserActivity\Traits\UserActivityTrait;
+use BetterFuturesStudio\FilamentLocalLogins\Concerns\HasLocalLogins;
+
+class User extends Authenticatable implements FilamentUser, HasAvatar
+{
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield, UserActivityTrait, HasLocalLogins;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'avatar_url',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url("$this->avatar_url") : null;
+    }
+
+    // public function getResetPasswordUrl(string $token, array $parameters = []): string
+    // {
+    //     return URL::signedRoute(
+    //         'filament.admin.auth.password-reset.reset',
+    //         [
+    //             'email' => $this->email,
+    //             'token' => $token,
+    //         ],
+    //     );
+    // }
+
+    // public function sendPasswordResetNotification($token)
+    // {
+    //     Notification::send($this, new SetPassword($token));
+    // }
+}

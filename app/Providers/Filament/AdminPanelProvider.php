@@ -82,13 +82,16 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                LatestPatrol::class,
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
                 LatestMeasurement::class,
+                LatestPatrol::class,
                 UserStatsOverview::class,
                 DailyPatrolChart::class,
                 DailyPatrolChart_2::class,
                 DailyPatrolChart_3::class,
                 DailyPatrolChart_4::class,
+                
             ])                       
             ->middleware([
                 EncryptCookies::class,

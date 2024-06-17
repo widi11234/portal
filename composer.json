@@ -52,7 +52,8 @@
         "stechstudio/filament-impersonate": "^3.9",
         "tapp/filament-auditing": "3.0",
         "tapp/filament-invite": "^1.0",
-        "tomatophp/filament-accounts": "^2.0"
+        "tomatophp/filament-accounts": "^2.0",
+        "tomatophp/filament-translations": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

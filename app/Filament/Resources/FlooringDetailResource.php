@@ -40,6 +40,11 @@ class FlooringDetailResource extends Resource
 
     protected static ?string $navigationGroup = 'Data measurement';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form

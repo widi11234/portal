@@ -35,6 +35,11 @@ class GarmentDetailResource extends Resource
 
     protected static ?string $navigationGroup = 'Data measurement';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -69,7 +74,7 @@ class GarmentDetailResource extends Resource
                                 }
                             }),
                         Forms\Components\TextInput::make('d1_scientific')
-                            ->required()
+                            // ->required()
                             ->maxLength(255)  
                             ->label('D1 Scientific')
                             ->disabled()
@@ -106,7 +111,7 @@ class GarmentDetailResource extends Resource
                                 }
                             }),
                         Forms\Components\TextInput::make('d2_scientific')
-                            ->required()
+                            // ->required()
                             ->maxLength(255)  
                             ->label('D2 Scientific')
                             ->disabled()
@@ -143,7 +148,7 @@ class GarmentDetailResource extends Resource
                                 }
                             }),
                         Forms\Components\TextInput::make('d3_scientific')
-                            ->required()
+                            // ->required()
                             ->maxLength(255)  
                             ->label('D3 Scientific')
                             ->disabled()
@@ -180,7 +185,7 @@ class GarmentDetailResource extends Resource
                                 }
                             }),
                         Forms\Components\TextInput::make('d4_scientific')
-                            ->required()
+                            // ->required()
                             ->maxLength(255)  
                             ->label('D4 Scientific')
                             ->disabled()

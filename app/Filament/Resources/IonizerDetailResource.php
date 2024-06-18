@@ -37,6 +37,11 @@ class IonizerDetailResource extends Resource
 
     protected static ?string $navigationGroup = 'Data measurement';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -198,7 +198,7 @@ class DailyPatrolResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //AuditsRelationManager::class,
         ];
     }
 

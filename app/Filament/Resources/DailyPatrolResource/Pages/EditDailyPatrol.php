@@ -31,6 +31,7 @@ class EditDailyPatrol extends EditRecord
 
     protected function afterSave(): void
     {
+            $this->dispatch('updateAuditsRelationManager');
             $dailypatrol = $this->record;
 
             Notification::make()

@@ -10,11 +10,18 @@ use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use EightyNine\Reports\ReportsPlugin;
 use Illuminate\Support\Facades\Blade;
+use App\Filament\Widgets\LatestPatrol;
 use Orion\FilamentBackup\BackupPlugin;
 use EightyNine\Approvals\ApprovalPlugin;
+use App\Filament\Widgets\DailyPatrolChart;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Widgets\LatestMeasurement;
+use App\Filament\Widgets\UserStatsOverview;
 use Rmsramos\Activitylog\ActivitylogPlugin;
+use App\Filament\Widgets\AUserStatsOverview;
+use App\Filament\Widgets\DailyPatrolChart_2;
+use App\Filament\Widgets\DailyPatrolChart_3;
+use App\Filament\Widgets\DailyPatrolChart_4;
 use LaraZeus\DynamicDashboard\Models\Layout;
 use LaraZeus\DynamicDashboard\Models\Columns;
 use lockscreen\FilamentLockscreen\Lockscreen;
@@ -39,14 +46,8 @@ use Edwink\FilamentUserActivity\FilamentUserActivityPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
-use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
-use App\Filament\Resources\DailyPatrolResource\Widgets\LatestPatrol;
-use App\Filament\Resources\DailyPatrolResource\Widgets\DailyPatrolChart;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
-use App\Filament\Resources\DailyPatrolResource\Widgets\DailyPatrolChart_2;
-use App\Filament\Resources\DailyPatrolResource\Widgets\DailyPatrolChart_3;
-use App\Filament\Resources\DailyPatrolResource\Widgets\DailyPatrolChart_4;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
@@ -83,11 +84,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                AUserStatsOverview::class,
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
                 LatestMeasurement::class,
                 LatestPatrol::class,
-                UserStatsOverview::class,
                 DailyPatrolChart::class,
                 DailyPatrolChart_2::class,
                 DailyPatrolChart_3::class,

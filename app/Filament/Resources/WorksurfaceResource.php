@@ -19,9 +19,10 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\WorksurfaceResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
-use App\Filament\Resources\WorksurfaceResource\RelationManagers;
-use App\Filament\Resources\WorksurfaceResource\RelationManagers\WorksurfaceDetailRelationManager;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\WorksurfaceResource\RelationManagers;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+use App\Filament\Resources\WorksurfaceResource\RelationManagers\WorksurfaceDetailRelationManager;
 
 class WorksurfaceResource extends Resource
 {
@@ -117,6 +118,7 @@ class WorksurfaceResource extends Resource
     {
         return [
             WorksurfaceDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

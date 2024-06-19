@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Garment extends Model
+class Garment extends Model implements Auditable
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, \OwenIt\Auditing\Auditable;
     protected $fillable =['nik','name','department'];
 
     public function garmentDetails()

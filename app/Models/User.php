@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Notifications\Notification;
 use Illuminate\Notifications\Notifiable;
+use OwenIt\Auditing\Contracts\Auditable;
 use Filament\Models\Contracts\FilamentUser;
 use Tapp\FilamentInvite\Notifications\SetPassword;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
@@ -16,10 +17,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Edwink\FilamentUserActivity\Traits\UserActivityTrait;
 use BetterFuturesStudio\FilamentLocalLogins\Concerns\HasLocalLogins;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar
+class User extends Authenticatable implements FilamentUser, HasAvatar, Auditable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield, UserActivityTrait, HasLocalLogins;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield, UserActivityTrait, HasLocalLogins,\OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

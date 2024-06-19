@@ -27,6 +27,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Card as InfolistCard;
 use App\Filament\Resources\SolderingDetailResource\Pages;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\SolderingDetailResource\Widgets\SolderingDetailStatsOverview;
 
 class SolderingDetailResource extends Resource
@@ -209,7 +210,7 @@ class SolderingDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Tambahkan relasi di sini jika diperlukan
+            AuditsRelationManager::class,
         ];
     }
 

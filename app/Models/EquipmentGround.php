@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\EquipmentGroundDetail;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Traits\LogsActivity;
+use OwenIt\Auditing\Contracts\Auditable;
+//use OwenIt\Auditing\Auditable;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class EquipmentGround extends Model
+class EquipmentGround extends Model implements Auditable
 {
-    use HasFactory, LogsActivity;
-    
+    use HasFactory, LogsActivity, \OwenIt\Auditing\Auditable;
+
     protected $fillable = ['machine_name', 'area', 'location'];
 
     public function equipmentGroundDetails()

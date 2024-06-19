@@ -29,6 +29,7 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\PackagingDetailResource\Pages\EditPackagingDetail;
 use App\Filament\Resources\PackagingDetailResource\Pages\ViewPackagingDetail;
 use App\Filament\Resources\PackagingDetailResource\Pages\ListPackagingDetails;
@@ -230,7 +231,7 @@ class PackagingDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Tambahkan relation managers jika diperlukan
+            AuditsRelationManager::class,
         ];
     }
 

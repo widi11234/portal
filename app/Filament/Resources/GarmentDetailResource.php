@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\GarmentDetailResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\GarmentDetailResource\RelationManagers;
 use App\Filament\Resources\GarmentDetailResource\Widgets\GarmentDetailStatsOverview;
 
@@ -411,7 +412,7 @@ class GarmentDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Tambahkan relation managers jika diperlukan
+            AuditsRelationManager::class,
         ];
     }
 

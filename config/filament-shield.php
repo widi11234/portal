@@ -84,7 +84,7 @@ return [
     ],
 
     'register_role_policy' => [
-        'enabled' => false,
+        'enabled' => true,
     ],
 
     // New configuration to ensure plugins are not displayed by default

@@ -18,7 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use TomatoPHP\FilamentAccounts\Components\AccountColumn;
 use App\Filament\Resources\UserResource\RelationManagers;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
+use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
 
 class UserResource extends Resource
 {
@@ -83,7 +85,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //               
+            AuditsRelationManager::class,             
         ];
     }
     public static function getWidget(): array
@@ -91,6 +93,7 @@ class UserResource extends Resource
         return
         [
             UserStatsOverview::class,
+            AuthenticationLogsRelationManager::class,
         ];
     }
 

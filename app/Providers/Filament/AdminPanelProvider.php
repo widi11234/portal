@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Blade;
 use Orion\FilamentBackup\BackupPlugin;
 use EightyNine\Approvals\ApprovalPlugin;
 use Filament\Http\Middleware\Authenticate;
+use App\Filament\Widgets\LatestMeasurement;
 use Rmsramos\Activitylog\ActivitylogPlugin;
 use LaraZeus\DynamicDashboard\Models\Layout;
 use LaraZeus\DynamicDashboard\Models\Columns;
@@ -39,6 +40,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
+use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
 use App\Filament\Resources\DailyPatrolResource\Widgets\LatestPatrol;
 use App\Filament\Resources\DailyPatrolResource\Widgets\DailyPatrolChart;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
@@ -49,7 +51,6 @@ use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use JulioMotol\FilamentPasswordConfirmation\FilamentPasswordConfirmationPlugin;
-use App\Filament\Widgets\LatestMeasurement;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -67,11 +68,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->emailVerification()
-            ->passwordReset()
+            // ->emailVerification()
+            // ->passwordReset()
             ->databaseNotifications()
-            ->registration()
-            ->profile()
+            // ->registration()
+            //->profile()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -108,20 +109,20 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                FilamentSpatieLaravelBackupPlugin::make(),
+                //FilamentSpatieLaravelBackupPlugin::make(),
                 FilamentShieldPlugin::make(),
                 ActivitylogPlugin::make(),
                 FilamentUserActivityPlugin::make(),
-                FilamentGeneralSettingsPlugin::make()
-                    ->canAccess(fn() => auth()->user()->id === 1)
-                    ->setSort(3)
-                    ->setIcon('heroicon-o-cog')
-                    ->setNavigationGroup('Settings')
-                    ->setTitle('General Settings')
-                    ->setNavigationLabel('General Settings'),
+                // FilamentGeneralSettingsPlugin::make()
+                //     ->canAccess(fn() => auth()->user()->id === 1)
+                //     ->setSort(3)
+                //     ->setIcon('heroicon-o-cog')
+                //     ->setNavigationGroup('Settings')
+                //     ->setTitle('General Settings')
+                //     ->setNavigationLabel('General Settings'),
                 new LocalLogins(),
-                MaintenanceSwitchPlugin::make(),
-                FilamentSpatieLaravelHealthPlugin::make(),
+                //MaintenanceSwitchPlugin::make(),
+                //FilamentSpatieLaravelHealthPlugin::make(),
                 DynamicDashboardPlugin::make()
                     ->models([
                         'Layout' => Layout::class,
@@ -136,7 +137,7 @@ class AdminPanelProvider extends PanelProvider
                     ->hideLayoutResource()
                 
                     ->defaultLayout('new-page'),
-                
+                //FilamentAuthenticationLogPlugin::make()
                 // RenewPasswordPlugin::make()
                 //     ->routeName('confirm')
                 //     ->routeUri('auth/confirm')

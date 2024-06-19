@@ -7,23 +7,24 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\EquipmentGround;
-use App\Models\EquipmentGroundDetail;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use App\Models\EquipmentGroundDetail;
+use Filament\Infolists\Components\Html;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Columns\Summarizers\Count;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
 use App\Filament\Resources\EquipmentGroundResource\Pages;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\EquipmentGroundResource\RelationManagers;
 use App\Filament\Resources\EquipmentGroundResource\RelationManagers\EquipmentGroundDetailRelationManager;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Filament\Infolists\Components\Html;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class EquipmentGroundResource extends Resource
 {
@@ -128,6 +129,7 @@ class EquipmentGroundResource extends Resource
     {
         return [
             EquipmentGroundDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

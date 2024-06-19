@@ -23,8 +23,9 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Card as InfolistCard;
-use App\Filament\Resources\GroundMonitorBoxDetailResource\Pages;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\GroundMonitorBoxDetailResource\Pages;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 
 class GroundMonitorBoxDetailResource extends Resource
 {
@@ -215,7 +216,7 @@ class GroundMonitorBoxDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Add relation managers if necessary
+            AuditsRelationManager::class,
         ];
     }
 

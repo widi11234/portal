@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\IonizerDetailResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\IonizerDetailResource\RelationManagers;
 
 class IonizerDetailResource extends Resource
@@ -291,7 +292,7 @@ class IonizerDetailResource extends Resource
                             'NG' => 'danger',
                         }),
                 Tables\Columns\TextColumn::make('remarks')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->date()->label('Created At')->dateTime(),
+                Tables\Columns\TextColumn::make('created_at')->date()->label('Created At'),
             ])
             ->filters([
                 SelectFilter::make('register_no')
@@ -396,7 +397,7 @@ class IonizerDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AuditsRelationManager::class,
         ];
     }
 

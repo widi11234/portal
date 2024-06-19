@@ -19,10 +19,11 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\GloveResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\GloveResource\RelationManagers;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\GloveResource\RelationManagers\GloveDetailRelationManager;
 use App\Filament\Resources\GloveResource\RelationManagers\GloveDetailsRelationManager;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class GloveResource extends Resource
 {
@@ -119,6 +120,7 @@ class GloveResource extends Resource
     {
         return [
             GloveDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

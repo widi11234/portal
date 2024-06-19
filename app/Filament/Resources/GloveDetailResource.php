@@ -26,6 +26,7 @@ use App\Filament\Resources\GloveDetailResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\GloveDetailResource\RelationManagers;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\GloveDetailResource\Widgets\GloveDetailStatsOverview;
 
 class GloveDetailResource extends Resource
@@ -219,7 +220,7 @@ class GloveDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Define any relations here if needed
+            AuditsRelationManager::class,
         ];
     }
 

@@ -15,9 +15,10 @@ use Filament\Forms\Components\TextInput;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Card as InfolistCard;
-use App\Filament\Resources\GroundMonitorBoxResource\Pages;
-use App\Filament\Resources\GroundMonitorBoxResource\RelationManagers\GroundMonitorBoxDetailRelationManager;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\GroundMonitorBoxResource\Pages;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+use App\Filament\Resources\GroundMonitorBoxResource\RelationManagers\GroundMonitorBoxDetailRelationManager;
 
 class GroundMonitorBoxResource extends Resource
 {
@@ -114,6 +115,7 @@ class GroundMonitorBoxResource extends Resource
     {
         return [
             GroundMonitorBoxDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

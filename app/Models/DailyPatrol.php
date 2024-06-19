@@ -6,14 +6,15 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
+use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use EightyNine\Approvals\Models\ApprovableModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
-class DailyPatrol extends ApprovableModel
+class DailyPatrol extends ApprovableModel implements Auditable
 {
-    use HasFactory, LogsActivity, HasFilamentComments;
+    use HasFactory, LogsActivity, HasFilamentComments, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'description_problem',

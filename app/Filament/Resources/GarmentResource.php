@@ -18,10 +18,11 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\GarmentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\GarmentDetail; // Pastikan model ini diimpor
 use App\Filament\Resources\GarmentResource\RelationManagers;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\GarmentResource\RelationManagers\GarmentDetailRelationManager;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class GarmentResource extends Resource
 {
@@ -118,6 +119,7 @@ class GarmentResource extends Resource
     {
         return [
             GarmentDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

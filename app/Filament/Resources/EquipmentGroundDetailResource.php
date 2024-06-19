@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\EquipmentGroundDetailResource\Pages;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\EquipmentGroundDetailResource\RelationManagers;
 use App\Filament\Resources\EquipmentGroundDetailResource\Widgets\EquipmentGroundDetailStatsOverview;
 
@@ -261,7 +262,7 @@ class EquipmentGroundDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AuditsRelationManager::class,
         ];
     }
 

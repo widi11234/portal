@@ -17,9 +17,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\FlooringResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
-use App\Models\FlooringDetail; // Pastikan model ini diimpor
-use App\Filament\Resources\FlooringResource\RelationManagers\FlooringDetailRelationManager;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Models\FlooringDetail; // Pastikan model ini diimpor
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+use App\Filament\Resources\FlooringResource\RelationManagers\FlooringDetailRelationManager;
 
 class FlooringResource extends Resource
 {
@@ -119,6 +120,7 @@ class FlooringResource extends Resource
     {
         return [
             FlooringDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

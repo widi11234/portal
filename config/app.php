@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use OwenIt\Auditing\AuditingServiceProvider;
 
 return [
 
@@ -170,6 +171,7 @@ return [
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\UtilityPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
+        OwenIt\Auditing\AuditingServiceProvider::class,
     ])->toArray(),
 
     /*

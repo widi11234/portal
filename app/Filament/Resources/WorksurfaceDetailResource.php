@@ -24,6 +24,7 @@ use Filament\Infolists\Components\Card as InfolistCard;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\WorksurfaceDetailResource\Pages;
 use App\Filament\Resources\WorksurfaceDetailResource\Widgets\WorksurfaceDetailStatsOverview;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 
 class WorksurfaceDetailResource extends Resource
 {
@@ -284,7 +285,7 @@ class WorksurfaceDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Tambahkan relasi jika diperlukan
+            AuditsRelationManager::class,
         ];
     }
 

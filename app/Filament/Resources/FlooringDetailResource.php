@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
 use App\Filament\Resources\FlooringDetailResource\Pages;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\FlooringDetailResource\RelationManagers;
 use App\Filament\Resources\FlooringDetailResource\Widgets\FlooringDetailStatsOverview;
 
@@ -223,7 +224,7 @@ class FlooringDetailResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Add relation managers if necessary
+            AuditsRelationManager::class,
         ];
     }
 

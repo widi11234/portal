@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class GroundMonitorBoxDetail extends Model
+class GroundMonitorBoxDetail extends Model implements Auditable
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity,\OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'ground_monitor_box_id',

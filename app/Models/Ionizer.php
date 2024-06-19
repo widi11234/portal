@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use App\Models\IonizerDetail;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Ionizer extends Model
+class Ionizer extends Model implements Auditable
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, \OwenIt\Auditing\Auditable;
     protected $fillable =['register_no','area','location'];
 
     public function ionizerdetails()

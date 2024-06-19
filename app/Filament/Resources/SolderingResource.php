@@ -19,9 +19,10 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\SolderingResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Card as InfolistCard;
-use App\Filament\Resources\SolderingResource\RelationManagers;
-use App\Filament\Resources\SolderingResource\RelationManagers\SolderingDetailRelationManager;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\SolderingResource\RelationManagers;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+use App\Filament\Resources\SolderingResource\RelationManagers\SolderingDetailRelationManager;
 
 class SolderingResource extends Resource
 {
@@ -118,6 +119,7 @@ class SolderingResource extends Resource
     {
         return [
             SolderingDetailRelationManager::class,
+            AuditsRelationManager::class,
         ];
     }
 

@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use TomatoPHP\FilamentAccounts\Components\AccountColumn;
 use App\Filament\Resources\UserResource\RelationManagers;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineAction;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
@@ -71,6 +72,15 @@ class UserResource extends Resource
                 // 
             ])
             ->actions([ 
+                ActivityLogTimelineAction::make('Activities')
+                    ->timelineIcons([
+                        'created' => 'heroicon-m-check-badge',
+                        'updated' => 'heroicon-m-pencil-square',
+                    ])
+                    ->timelineIconColors([
+                        'created' => 'info',
+                        'updated' => 'warning',
+                    ]),
                 // Tapp\FilamentInvite\Actions\InviteAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

@@ -8,6 +8,7 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Hasnayeen\Themes\ThemesPlugin;
 use EightyNine\Reports\ReportsPlugin;
 use Illuminate\Support\Facades\Blade;
 use App\Filament\Widgets\LatestPatrol;
@@ -25,6 +26,7 @@ use App\Filament\Widgets\DailyPatrolChart_4;
 use LaraZeus\DynamicDashboard\Models\Layout;
 use LaraZeus\DynamicDashboard\Models\Columns;
 use lockscreen\FilamentLockscreen\Lockscreen;
+use Hasnayeen\Themes\Http\Middleware\SetTheme;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -72,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
             // ->emailVerification()
             // ->passwordReset()
             ->databaseNotifications()
-            // ->registration()
+            ->registration()
             //->profile()
             ->colors([
                 'primary' => Color::Blue,
@@ -105,6 +107,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SetTheme::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -122,22 +125,23 @@ class AdminPanelProvider extends PanelProvider
                 //     ->setTitle('General Settings')
                 //     ->setNavigationLabel('General Settings'),
                 new LocalLogins(),
+                ThemesPlugin::make(),
                 //MaintenanceSwitchPlugin::make(),
                 //FilamentSpatieLaravelHealthPlugin::make(),
-                DynamicDashboardPlugin::make()
-                    ->models([
-                        'Layout' => Layout::class,
-                        'Columns' => Columns::class
-                    ])
+                // DynamicDashboardPlugin::make()
+                //     ->models([
+                //         'Layout' => Layout::class,
+                //         'Columns' => Columns::class
+                //     ])
                 
-                    ->uploadDisk('public')
-                    ->uploadDirectory('layouts')
+                //     ->uploadDisk('public')
+                //     ->uploadDirectory('layouts')
                 
-                    ->navigationGroupLabel('Dynamic Dashboard')
+                //     ->navigationGroupLabel('Dynamic Dashboard')
                 
-                    ->hideLayoutResource()
+                //     ->hideLayoutResource()
                 
-                    ->defaultLayout('new-page'),
+                //     ->defaultLayout('new-page'),
                 //FilamentAuthenticationLogPlugin::make()
                 // RenewPasswordPlugin::make()
                 //     ->routeName('confirm')

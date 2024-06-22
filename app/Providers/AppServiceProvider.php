@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
 
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
             $panelSwitch
-                ->modalWidth('sm')
+                //->modalWidth('sm')
                 ->modalHeading('Switch Portal')
                 ->slideOver()
                 ->icons([

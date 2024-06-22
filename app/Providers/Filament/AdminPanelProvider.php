@@ -54,6 +54,7 @@ use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use JulioMotol\FilamentPasswordConfirmation\FilamentPasswordConfirmationPlugin;
+use Filament\View\PanelsRenderHook;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -189,6 +190,12 @@ class AdminPanelProvider extends PanelProvider
                 // ...
                  Locker::class,
                  RedirectIfNotInstalled::class, // <- Add this
-            ]);
+            ])
+            ->renderHook(
+                // This line tells us where to render it
+                'panels::body.end',
+                // This is the view that will be rendered
+                fn () => view('customFooter'),
+            );
     }
 }

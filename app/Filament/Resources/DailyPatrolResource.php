@@ -83,8 +83,8 @@ class DailyPatrolResource extends Resource
                     ->schema([
                         FileUpload::make('photo_before')
                             ->label('Photo Before')
-                            //->required()
                             ->disk('public'),
+                            //->required()
                         FileUpload::make('photo_after')
                             ->label('Photo After'),
                     ])->columns(2),
@@ -117,10 +117,10 @@ class DailyPatrolResource extends Resource
                         }),
                 ])->columns(2),
                 InfolistCard::make([
-                    ImageEntry::make('photo_before')
-                        ->disk('public'),
+                    ImageEntry::make('photo_before'),
+                        // ->disk('public'),
                     ImageEntry::make('photo_after')
-                        ->disk('public'),
+                        // ->disk('public'),
                 ])->columns(2),
                 InfolistCard::make([
                     TextEntry::make('corrective_action'),
@@ -161,11 +161,11 @@ class DailyPatrolResource extends Resource
                         'CLOSED' => 'success',
                     }),
                 ImageColumn::make('photo_before')
-                    ->label('Photo Before')
-                    ->disk('public'),
+                    ->label('Photo Before'),
+                    // ->disk('public'),
                 ImageColumn::make('photo_after')
-                    ->label('Photo After')
-                    ->disk('public'),
+                    ->label('Photo After'),
+                    // ->disk('public'),
                 TextColumn::make('corrective_action')
                     ->label('Corrective Action')
                     ->sortable()

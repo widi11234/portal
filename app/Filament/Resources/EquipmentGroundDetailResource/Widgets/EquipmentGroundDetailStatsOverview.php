@@ -8,6 +8,8 @@ use Filament\Widgets\StatsOverviewWidget\Card as Stat;
 
 class EquipmentGroundDetailStatsOverview extends BaseWidget
 {
+    protected int | string | array $columnSpan = '5';
+
     protected function getCards(): array
     {
         $totalData = EquipmentGroundDetail::count();

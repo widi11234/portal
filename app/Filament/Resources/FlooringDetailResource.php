@@ -32,6 +32,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\FlooringDetailResource\RelationManagers;
 use App\Filament\Resources\FlooringDetailResource\Widgets\FlooringDetailStatsOverview;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FlooringDetailResource extends Resource
 {
@@ -214,7 +217,19 @@ class FlooringDetailResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                    ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->openUrlInNewTab()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                echo Pdf::loadHTML(
+                                    Blade::render('FlooringDetailpdf', ['records' => $records])
+                                )->stream();
+                            }, 'Report_flooring_measurement.pdf');
+                        }),
+                    ExportBulkAction::make()
+                        ->label('Export Excel'),
                     Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

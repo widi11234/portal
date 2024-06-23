@@ -23,6 +23,9 @@ use App\Models\GarmentDetail; // Pastikan model ini diimpor
 use App\Filament\Resources\GarmentResource\RelationManagers;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\GarmentResource\RelationManagers\GarmentDetailRelationManager;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 class GarmentResource extends Resource
 {
@@ -110,7 +113,19 @@ class GarmentResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->openUrlInNewTab()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                echo Pdf::loadHTML(
+                                    Blade::render('Garmentpdf', ['records' => $records])
+                                )->stream();
+                            }, 'Garment.pdf');
+                        }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

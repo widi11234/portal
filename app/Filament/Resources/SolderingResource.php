@@ -23,6 +23,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\SolderingResource\RelationManagers;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\SolderingResource\RelationManagers\SolderingDetailRelationManager;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 class SolderingResource extends Resource
 {
@@ -110,7 +113,19 @@ class SolderingResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->openUrlInNewTab()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                echo Pdf::loadHTML(
+                                    Blade::render('Solderingpdf', ['records' => $records])
+                                )->stream();
+                            }, 'Soldering.pdf');
+                        }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

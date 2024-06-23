@@ -23,6 +23,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\PackagingResource\RelationManagers;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\PackagingResource\RelationManagers\PackagingDetailRelationManager;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 class PackagingResource extends Resource
 {
@@ -107,7 +110,19 @@ class PackagingResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->openUrlInNewTab()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                echo Pdf::loadHTML(
+                                    Blade::render('Packagingpdf', ['records' => $records])
+                                )->stream();
+                            }, 'Packaging.pdf');
+                        }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

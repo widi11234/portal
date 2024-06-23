@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Ground Measurement Report</title>
+    <title>Glove Measurement Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,48 +77,35 @@
 </head>
 <body>
     <div class="header">
-        <h1>Equipment Ground Measurement Report</h1>
+        <h1>Glove Measurement Report</h1>
     </div>
     
     <div class="content">
-        <p>Measurement ohm: &lt; 1.0 ohm</p>
-        <p>Measurement volts: &lt; 2.0 volts</p>
+        <p>C1 (Glove Point to point): &lt; < 1.00E+11 ohm</p>
         
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Machine Name</th>
-                    <th>Area</th>
-                    <th>Location</th>
-                    <th>Measure Results Ohm</th>
-                    <th>Judgement Ohm</th>
-                    <th>Measure Results Volts</th>
-                    <th>Judgement Volts</th>
+                    <th>SAP CODE</th>
+                    <th>Description</th>
+                    <th>Delivery</th>
+                    <th>C1 Scientific</th>
+                    <th>Judgement</th>
                     <th>Remarks</th>
                     <th>Created At</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Example loop assuming PHP or similar backend templating -->
-                <!-- Replace with actual backend logic for generating rows -->
                 @foreach($records as $record)
                 <tr>
                     <td>{{ $record->id }}</td>
-                    <td>{{ $record->equipmentground->machine_name }}</td>
-                    <td>{{ $record->equipmentground->area }}</td>
-                    <td>{{ $record->equipmentground->location }}</td>
-                    <td>{{ $record->measure_results_ohm }}</td>
+                    <td>{{ $record->glove->sap_code }}</td>
+                    <td>{{ $record->glove->description }}</td>
+                    <td>{{ $record->glove->delivery }}</td>
+                    <td>{{ $record->c1_scientific }}</td>
                     <td>
-                        @if ($record->judgement_ohm == 'OK')
-                            <button class="button-ok">OK</button>
-                        @else
-                            <button class="button-ng">NG</button>
-                        @endif
-                    </td>
-                    <td>{{ $record->measure_results_volts }}</td>
-                    <td>
-                        @if ($record->judgement_volts == 'OK')
+                        @if ($record->judgement == 'OK')
                             <button class="button-ok">OK</button>
                         @else
                             <button class="button-ng">NG</button>

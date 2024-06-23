@@ -35,6 +35,9 @@ use App\Filament\Resources\PackagingDetailResource\Pages\ViewPackagingDetail;
 use App\Filament\Resources\PackagingDetailResource\Pages\ListPackagingDetails;
 use App\Filament\Resources\PackagingDetailResource\Pages\CreatePackagingDetail;
 use App\Filament\Resources\PackagingDetailResource\Widgets\PackagingDetailStatsOverview;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PackagingDetailResource extends Resource
 {
@@ -223,7 +226,19 @@ class PackagingDetailResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                                ->icon('heroicon-m-arrow-down-tray')
+                                ->openUrlInNewTab()
+                                ->deselectRecordsAfterCompletion()
+                                ->action(function (Collection $records) {
+                                    return response()->streamDownload(function () use ($records) {
+                                        echo Pdf::loadHTML(
+                                            Blade::render('PackagingDetailpdf', ['records' => $records])
+                                        )->stream();
+                                    }, 'Report_packaging_measurement.pdf');
+                                }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

@@ -21,6 +21,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\FlooringDetail; // Pastikan model ini diimpor
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Resources\FlooringResource\RelationManagers\FlooringDetailRelationManager;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 class FlooringResource extends Resource
 {
@@ -111,7 +114,19 @@ class FlooringResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->openUrlInNewTab()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                echo Pdf::loadHTML(
+                                    Blade::render('Flooringpdf', ['records' => $records])
+                                )->stream();
+                            }, 'Flooring.pdf');
+                        }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

@@ -25,6 +25,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\WorksurfaceDetailResource\Pages;
 use App\Filament\Resources\WorksurfaceDetailResource\Widgets\WorksurfaceDetailStatsOverview;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WorksurfaceDetailResource extends Resource
 {
@@ -277,7 +280,19 @@ class WorksurfaceDetailResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
+                Tables\Actions\BulkAction::make('Export Pdf')
+                                ->icon('heroicon-m-arrow-down-tray')
+                                ->openUrlInNewTab()
+                                ->deselectRecordsAfterCompletion()
+                                ->action(function (Collection $records) {
+                                    return response()->streamDownload(function () use ($records) {
+                                        echo Pdf::loadHTML(
+                                            Blade::render('WorksurfaceDetailpdf', ['records' => $records])
+                                        )->stream();
+                                    }, 'Report_worksurface_measurement.pdf');
+                                }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

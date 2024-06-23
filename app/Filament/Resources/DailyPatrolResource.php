@@ -31,6 +31,9 @@ use App\Filament\Resources\DailyPatrolResource\RelationManagers;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use Parallax\FilamentComments\Tables\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 class DailyPatrolResource extends Resource
 {
@@ -188,7 +191,19 @@ class DailyPatrolResource extends Resource
                     Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
-                    ExportBulkAction::make(),
+                    Tables\Actions\BulkAction::make('Export Pdf')
+                                ->icon('heroicon-m-arrow-down-tray')
+                                ->openUrlInNewTab()
+                                ->deselectRecordsAfterCompletion()
+                                ->action(function (Collection $records) {
+                                    return response()->streamDownload(function () use ($records) {
+                                        echo Pdf::loadHTML(
+                                            Blade::render('DailyPatrolpdf', ['records' => $records])
+                                        )->stream();
+                                    }, 'Report_daily_patrol.pdf');
+                                }),
+                    ExportBulkAction::make()
+                        ->label('Export Excel'),
                     Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

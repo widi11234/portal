@@ -9,6 +9,7 @@ use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Hasnayeen\Themes\ThemesPlugin;
+use Filament\View\PanelsRenderHook;
 use EightyNine\Reports\ReportsPlugin;
 use Illuminate\Support\Facades\Blade;
 use App\Filament\Widgets\LatestPatrol;
@@ -39,6 +40,7 @@ use TomatoPHP\FilamentAccounts\FilamentAccountsPlugin;
 use BetterFuturesStudio\FilamentLocalLogins\LocalLogins;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use ShuvroRoy\FilamentSpatieLaravelBackup\Pages\Backups;
+use CmsMulti\FilamentClearCache\FilamentClearCachePlugin;
 use lockscreen\FilamentLockscreen\Http\Middleware\Locker;
 use Shipu\WebInstaller\Middleware\RedirectIfNotInstalled;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -47,6 +49,7 @@ use TomatoPHP\FilamentAccounts\FilamentAccountsSaaSPlugin;
 use Edwink\FilamentUserActivity\FilamentUserActivityPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
@@ -54,7 +57,6 @@ use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use JulioMotol\FilamentPasswordConfirmation\FilamentPasswordConfirmationPlugin;
-use Filament\View\PanelsRenderHook;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -72,11 +74,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            // ->emailVerification()
-            // ->passwordReset()
             ->databaseNotifications()
             ->registration()
-            //->profile()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -95,8 +94,7 @@ class AdminPanelProvider extends PanelProvider
                 DailyPatrolChart::class,
                 DailyPatrolChart_2::class,
                 DailyPatrolChart_3::class,
-                DailyPatrolChart_4::class,
-                
+                DailyPatrolChart_4::class,   
             ])                       
             ->middleware([
                 EncryptCookies::class,
@@ -114,88 +112,21 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                //FilamentSpatieLaravelBackupPlugin::make(),
                 FilamentShieldPlugin::make(),
                 ActivitylogPlugin::make(),
                 FilamentUserActivityPlugin::make(),
-                // FilamentGeneralSettingsPlugin::make()
-                //     ->canAccess(fn() => auth()->user()->id === 1)
-                //     ->setSort(3)
-                //     ->setIcon('heroicon-o-cog')
-                //     ->setNavigationGroup('Settings')
-                //     ->setTitle('General Settings')
-                //     ->setNavigationLabel('General Settings'),
                 new LocalLogins(),
                 ThemesPlugin::make(),
-                //MaintenanceSwitchPlugin::make(),
-                //FilamentSpatieLaravelHealthPlugin::make(),
-                // DynamicDashboardPlugin::make()
-                //     ->models([
-                //         'Layout' => Layout::class,
-                //         'Columns' => Columns::class
-                //     ])
-                
-                //     ->uploadDisk('public')
-                //     ->uploadDirectory('layouts')
-                
-                //     ->navigationGroupLabel('Dynamic Dashboard')
-                
-                //     ->hideLayoutResource()
-                
-                //     ->defaultLayout('new-page'),
-                //FilamentAuthenticationLogPlugin::make()
-                // RenewPasswordPlugin::make()
-                //     ->routeName('confirm')
-                //     ->routeUri('auth/confirm')
-                //     ->routeMiddleware(FooMiddleware::class) // Accepts string|array
-                //     ->passwordTimeout(10800)
-                //ReportsPlugin::make()
-                // FilamentAccountsPlugin::make()
-                //     ->useAccountMeta()
-                //     ->showAddressField()
-                //     ->showTypeField()
-                //     ->useRequests()
-                //     ->useContactUs()
-                //     ->useLoginBy()
-                //     ->useAvatar()
-                //     ->useAPIs()
-                //     ->canLogin()
-                //     ->canBlocked()
-                //     //->useTeams()
-                //     ->useNotifications()
-                //     ->useLocations()
-                //     ->useTypes(),
-                    // ->useImpersonate()
-                    // ->impersonateRedirect('/app'),
-                // FilamentAccountsSaaSPlugin::make()
-                //     ->databaseNotifications()
-                //     ->checkAccountStatusInLogin()
-                //     //->APITokenManager()
-                //     // ->editTeam()
-                //     // ->deleteTeam()
-                //     // ->teamInvitation()
-                //     ->showTeamMembers()
-                //     ->editProfile()
-                //     ->editPassword()
-                //     ->browserSesstionManager()
-                //     ->deleteAccount()
-                //     ->editProfileMenu()
-                //     //->registration()
-                //     ->useOTPActivation(),
+                FilamentClearCachePlugin::make(),
             ])
-            ->plugin(
-                new Lockscreen()
-                )
             ->authMiddleware([
-                // ...
-                 Locker::class,
                  RedirectIfNotInstalled::class, // <- Add this
-            ])
-            ->renderHook(
-                // This line tells us where to render it
-                'panels::body.end',
-                // This is the view that will be rendered
-                fn () => view('customFooter'),
-            );
+            ]);
+            // ->renderHook(
+            //     // This line tells us where to render it
+            //     'panels::body.end',
+            //     // This is the view that will be rendered
+            //     fn () => view('customFooter'),
+            // );
     }
 }

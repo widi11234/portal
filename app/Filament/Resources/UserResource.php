@@ -8,126 +8,136 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Forms\Components\CheckboxList;
-use Filament\Forms\Components\Card;
+use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Tapp\FilamentInvite\Actions\InviteAction;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use TomatoPHP\FilamentAccounts\Components\AccountColumn;
-use App\Filament\Resources\UserResource\RelationManagers;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineAction;
-use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
-use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
-use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?int $navigationSort = 9;
 
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
 
-    public static function getNavigationBadge(): ?string
+    public static function getNavigationLabel(): string
     {
-        return static::getModel()::count();
+        return trans('filament-user::user.resource.label');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return trans('filament-user::user.resource.label');
+    }
+
+    public static function getLabel(): string
+    {
+        return trans('filament-user::user.resource.single');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return config('filament-user.group');
+    }
+
+    public function getTitle(): string
+    {
+        return trans('filament-user::user.resource.title.resource');
     }
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Card::make()
-                    ->schema([
-                        TextInput::make('name')
-                            ->required()
-                            ->unique(ignoreRecord: true),
-                        TextInput::make('email')
-                            ->required()
-                            ->unique(ignoreRecord: true),
-                        TextInput::make('password')
-                            ->required(),
-                        Forms\Components\Select::make('roles')
-                            ->relationship('roles', 'name')
-                            ->multiple()
-                            ->preload()
-                            ->searchable()
-                    ])
-            ]);
+        $rows = [
+            TextInput::make('name')
+                ->required()
+                ->label(trans('filament-user::user.resource.name')),
+            TextInput::make('email')
+                ->email()
+                ->required()
+                ->label(trans('filament-user::user.resource.email')),
+            TextInput::make('password')
+                ->label(trans('filament-user::user.resource.password'))
+                ->password()
+                ->maxLength(255)
+                ->dehydrateStateUsing(static function ($state) use ($form) {
+                    return !empty($state)
+                            ? Hash::make($state)
+                            : User::find($form->getColumns())?->password;
+                }),
+        ];
+
+        if (config('filament-user.shield')) {
+            $rows[] = Forms\Components\Select::make('roles')
+                ->multiple()
+                ->relationship('roles', 'name')
+                ->label(trans('filament-user::user.resource.roles'));
+        }
+
+        $form->schema($rows);
+
+        return $form;
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+        !config('filament-user.impersonate') ?: $table->actions([Impersonate::make('impersonate')]);
+        $table
             ->columns([
-                TextColumn::make('id')->sortable()->searchable(),
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('email')->sortable()->searchable(),
-                // AccountColumn::make('account.id'),
+                TextColumn::make('id')
+                    ->sortable()
+                    ->label(trans('filament-user::user.resource.id')),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable()
+                    ->label(trans('filament-user::user.resource.name')),
+                TextColumn::make('email')
+                    ->sortable()
+                    ->searchable()
+                    ->label(trans('filament-user::user.resource.email')),
+                IconColumn::make('email_verified_at')
+                    ->boolean()
+                    ->sortable()
+                    ->searchable()
+                    ->label(trans('filament-user::user.resource.email_verified_at')),
+                TextColumn::make('created_at')
+                    ->label(trans('filament-user::user.resource.created_at'))
+                    ->dateTime('M j, Y')
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label(trans('filament-user::user.resource.updated_at'))
+                    ->dateTime('M j, Y')
+                    ->sortable(),
             ])
             ->filters([
-                // 
+                Tables\Filters\Filter::make('verified')
+                    ->label(trans('filament-user::user.resource.verified'))
+                    ->query(fn(Builder $query): Builder => $query->whereNotNull('email_verified_at')),
+                Tables\Filters\Filter::make('unverified')
+                    ->label(trans('filament-user::user.resource.unverified'))
+                    ->query(fn(Builder $query): Builder => $query->whereNull('email_verified_at')),
             ])
-            ->actions([ 
-                ActivityLogTimelineAction::make('Activities')
-                    ->timelineIcons([
-                        'created' => 'heroicon-m-check-badge',
-                        'updated' => 'heroicon-m-pencil-square',
-                    ])
-                    ->timelineIconColors([
-                        'created' => 'info',
-                        'updated' => 'warning',
-                    ]),
-                // Tapp\FilamentInvite\Actions\InviteAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                    Tables\Actions\BulkAction::make('Export Pdf')
-                        ->icon('heroicon-m-arrow-down-tray')
-                        ->openUrlInNewTab()
-                        ->deselectRecordsAfterCompletion()
-                        ->action(function (Collection $records) {
-                            return response()->streamDownload(function () use ($records) {
-                                echo Pdf::loadHTML(
-                                    Blade::render('Userpdf', ['records' => $records])
-                                )->stream();
-                            }, 'users.pdf');
-                        }),
-                ExportBulkAction::make()
-                        ->label('Export Excel'),
-                Tables\Actions\DeleteBulkAction::make(),
+            ->actions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make()
+                ]),
             ]);
+        return $table;
     }
-
-    public static function getRelations(): array
-    {
-        return [
-            AuditsRelationManager::class,             
-        ];
-    }
-    public static function getWidget(): array
-    {
-        return
-        [
-            UserStatsOverview::class,
-            AuthenticationLogsRelationManager::class,
-        ];
-    }
-
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'view' => Pages\ViewUser::route('/{record}'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];

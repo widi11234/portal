@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
+use App\Http\Controllers\Auth\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,3 @@ Route::group(['middleware' => 'redirect.if.not.installed'], function () {
         return view('welcome');
     });
 });
-
-

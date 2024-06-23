@@ -2,28 +2,23 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use Filament\Actions;
 use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\ListRecords;
-use Tapp\FilamentInvite\Actions\InviteAction;
-use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
+use Filament\Actions\CreateAction;
 
 class ListUsers extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
-    protected function getHeaderActions(): array
+    public function getTitle(): string
     {
-        return [
-            // InviteAction::make(),
-            Actions\CreateAction::make(),
-        ];
+        return trans('filament-user::user.resource.title.list');
     }
 
-    protected function getHeaderWidgets(): array
+    protected function getActions(): array
     {
         return [
-            //UserStatsOverview::class,
+            CreateAction::make(),
         ];
     }
 }

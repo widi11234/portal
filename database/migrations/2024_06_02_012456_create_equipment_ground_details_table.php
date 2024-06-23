@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('equipment_ground_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('equipment_ground_id')->constrained('equipment_grounds')->onDelete('cascade');
-            $table->string('area');
-            $table->string('location');
+            $table->string('area')->nullable(); // Mengubah menjadi nullable()
+            $table->string('location')->nullable(); // Mengubah menjadi nullable()
             $table->unsignedBigInteger('measure_results_ohm');
             $table->string('judgement_ohm');
             $table->unsignedBigInteger('measure_results_volts');

@@ -217,17 +217,17 @@ class FlooringDetailResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('Export Pdf')
-                        ->icon('heroicon-m-arrow-down-tray')
-                        ->openUrlInNewTab()
-                        ->deselectRecordsAfterCompletion()
-                        ->action(function (Collection $records) {
-                            return response()->streamDownload(function () use ($records) {
-                                echo Pdf::loadHTML(
-                                    Blade::render('FlooringDetailpdf', ['records' => $records])
-                                )->stream();
-                            }, 'Report_flooring_measurement.pdf');
-                        }),
+                    Tables\Actions\BulkAction::make('Export Pdf')
+                            ->icon('heroicon-m-arrow-down-tray')
+                            ->openUrlInNewTab()
+                            ->deselectRecordsAfterCompletion()
+                            ->action(function (Collection $records) {
+                                return response()->streamDownload(function () use ($records) {
+                                    echo Pdf::loadHTML(
+                                        Blade::render('FlooringDetailpdf', ['records' => $records])
+                                    )->stream();
+                                }, 'Report_flooring_measurement.pdf');
+                            }),
                     ExportBulkAction::make()
                         ->label('Export Excel'),
                     Tables\Actions\BulkActionGroup::make([

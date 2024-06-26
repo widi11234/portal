@@ -60,19 +60,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, Auditable
         return $this->avatar_url ? Storage::url("$this->avatar_url") : null;
     }
 
-    // public function getResetPasswordUrl(string $token, array $parameters = []): string
+    // public function canAccessPanel(Panel $panel): bool
     // {
-    //     return URL::signedRoute(
-    //         'filament.admin.auth.password-reset.reset',
-    //         [
-    //             'email' => $this->email,
-    //             'token' => $token,
-    //         ],
-    //     );
-    // }
-
-    // public function sendPasswordResetNotification($token)
-    // {
-    //     Notification::send($this, new SetPassword($token));
+    //     return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
     // }
 }

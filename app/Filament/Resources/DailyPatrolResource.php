@@ -7,10 +7,13 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\DailyPatrol;
+use Filament\Actions\Action;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
 use Filament\Forms\Components\Card;
-use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\TextArea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -24,16 +27,13 @@ use Filament\Infolists\Components\ImageEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DailyPatrolResource\Pages;
 use Filament\Infolists\Components\Card as InfolistCard;
-use EightyNine\Approvals\Tables\Actions\ApprovalActions;
+use EightyNine\Approvals\Action\Actions\ApprovalActions;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Parallax\FilamentComments\Tables\Actions\CommentsAction;
 use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
 use App\Filament\Resources\DailyPatrolResource\RelationManagers;
-use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
-use Parallax\FilamentComments\Tables\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 
 class DailyPatrolResource extends Resource
 {
@@ -86,10 +86,10 @@ class DailyPatrolResource extends Resource
                     ->schema([
                         FileUpload::make('photo_before')
                             ->label('Photo Before')
-                            ->disk('public'),
-                            //->required()
+                            ->disk('storage/public'),
                         FileUpload::make('photo_after')
-                            ->label('Photo After'),
+                            ->label('Photo After')
+                            ->disk('storage/public'),
                     ])->columns(2),
                 Card::make()
                     ->schema([
@@ -121,9 +121,7 @@ class DailyPatrolResource extends Resource
                 ])->columns(2),
                 InfolistCard::make([
                     ImageEntry::make('photo_before'),
-                        // ->disk('public'),
-                    ImageEntry::make('photo_after')
-                        // ->disk('public'),
+                    ImageEntry::make('photo_after'),
                 ])->columns(2),
                 InfolistCard::make([
                     TextEntry::make('corrective_action'),
@@ -131,7 +129,7 @@ class DailyPatrolResource extends Resource
                 InfolistCard::make([
                     TextEntry::make('date_corrective')->date(),
                     TextEntry::make('created_at')->date(),
-                CommentsEntry::make('filament_comments'),
+                    CommentsEntry::make('filament_comments'),
                 ])->columns(2),
             ]);
     }
@@ -164,11 +162,11 @@ class DailyPatrolResource extends Resource
                         'CLOSED' => 'success',
                     }),
                 ImageColumn::make('photo_before')
-                    ->label('Photo Before'),
-                    // ->disk('public'),
+                    ->label('Photo Before')
+                    ->disk('storage/public'),
                 ImageColumn::make('photo_after')
-                    ->label('Photo After'),
-                    // ->disk('public'),
+                    ->label('Photo After')
+                    ->disk('storage/public'),
                 TextColumn::make('corrective_action')
                     ->label('Corrective Action')
                     ->sortable()
@@ -186,25 +184,25 @@ class DailyPatrolResource extends Resource
                 // Tambahkan filter jika diperlukan
             ])
             ->actions([
-                    CommentsAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\ViewAction::make()
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                    Tables\Actions\BulkAction::make('Export Pdf')
-                                ->icon('heroicon-m-arrow-down-tray')
-                                ->openUrlInNewTab()
-                                ->deselectRecordsAfterCompletion()
-                                ->action(function (Collection $records) {
-                                    return response()->streamDownload(function () use ($records) {
-                                        echo Pdf::loadHTML(
-                                            Blade::render('DailyPatrolpdf', ['records' => $records])
-                                        )->stream();
-                                    }, 'Report_daily_patrol.pdf');
-                                }),
-                    ExportBulkAction::make()
-                        ->label('Export Excel'),
-                    Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\BulkAction::make('Export Pdf')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->openUrlInNewTab()
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records) {
+                        return response()->streamDownload(function () use ($records) {
+                            echo Pdf::loadHTML(
+                                Blade::render('DailyPatrolpdf', ['records' => $records])
+                            )->stream();
+                        }, 'Report_daily_patrol.pdf');
+                    }),
+                ExportBulkAction::make()
+                    ->label('Export Excel'),
+                Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

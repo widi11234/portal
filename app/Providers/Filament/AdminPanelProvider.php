@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Blade;
 use App\Filament\Widgets\LatestPatrol;
 use Orion\FilamentBackup\BackupPlugin;
 use EightyNine\Approvals\ApprovalPlugin;
+use App\Filament\Widgets\CountMeasurement;
 use App\Filament\Widgets\DailyPatrolChart;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Widgets\LatestMeasurement;
@@ -24,9 +25,11 @@ use App\Filament\Widgets\AUserStatsOverview;
 use App\Filament\Widgets\DailyPatrolChart_2;
 use App\Filament\Widgets\DailyPatrolChart_3;
 use App\Filament\Widgets\DailyPatrolChart_4;
+use App\Filament\Widgets\CountDailyPatrol_1;
 use LaraZeus\DynamicDashboard\Models\Layout;
 use LaraZeus\DynamicDashboard\Models\Columns;
 use lockscreen\FilamentLockscreen\Lockscreen;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Hasnayeen\Themes\Http\Middleware\SetTheme;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -47,6 +50,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use TomatoPHP\FilamentAccounts\FilamentAccountsSaaSPlugin;
 use Edwink\FilamentUserActivity\FilamentUserActivityPlugin;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
@@ -71,8 +75,8 @@ class AdminPanelProvider extends PanelProvider
                 'Settings',
             ])
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('esd')
+            ->path('esd')
             ->login()
             ->databaseNotifications()
             ->registration()
@@ -89,6 +93,7 @@ class AdminPanelProvider extends PanelProvider
                 AUserStatsOverview::class,
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                CountMeasurement::class,
                 LatestMeasurement::class,
                 LatestPatrol::class,
                 DailyPatrolChart::class,
@@ -118,15 +123,12 @@ class AdminPanelProvider extends PanelProvider
                 new LocalLogins(),
                 ThemesPlugin::make(),
                 FilamentClearCachePlugin::make(),
+                ApprovalPlugin::make(),
+                SpotlightPlugin::make(),
+                FilamentApexChartsPlugin::make()
             ])
             ->authMiddleware([
                  RedirectIfNotInstalled::class, // <- Add this
             ]);
-            // ->renderHook(
-            //     // This line tells us where to render it
-            //     'panels::body.end',
-            //     // This is the view that will be rendered
-            //     fn () => view('customFooter'),
-            // );
     }
 }

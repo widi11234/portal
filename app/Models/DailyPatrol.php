@@ -30,12 +30,12 @@ class DailyPatrol extends ApprovableModel implements Auditable
 
     public function getPhotoBeforeUrlAttribute()
     {
-        return Storage::disk('public')->url($this->photo_before);
+        return Storage::disk('storage/public')->url($this->photo_before);
     }
 
     public function getPhotoAfterUrlAttribute()
     {
-        return Storage::disk('public')->url($this->photo_after);
+        return Storage::disk('storage/public')->url($this->photo_after);
     }
 
     public function getActivitylogOptions(): LogOptions

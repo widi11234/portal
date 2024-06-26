@@ -14,13 +14,11 @@ class DailyPatrolChart_2 extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::model(DailyPatrol::class)
-            ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
-            )
-            ->perMonth()
-            ->count();
+        $filter = $this->filter;
+        
+        $data = $this->applyFilters(
+            Trend::model(DailyPatrol::class)
+        );
 
         return [
             'datasets' => [
@@ -38,8 +36,45 @@ class DailyPatrolChart_2 extends ChartWidget
         ];
     }
 
+    protected function applyFilters($query)
+    {
+        switch ($this->filter) {
+            case 'today':
+                return $query->between(
+                    start: now()->startOfDay(),
+                    end: now()->endOfDay(),
+                )->perHour()->count();
+            case 'week':
+                return $query->between(
+                    start: now()->startOfWeek(),
+                    end: now()->endOfWeek(),
+                )->perDay()->count();
+            case 'month':
+                return $query->between(
+                    start: now()->startOfMonth(),
+                    end: now()->endOfMonth(),
+                )->perDay()->count();
+            case 'year':
+            default:
+                return $query->between(
+                    start: now()->startOfYear(),
+                    end: now()->endOfYear(),
+                )->perMonth()->count();
+        }
+    }
+
     protected function getType(): string
     {
         return 'line';
+    }
+
+    protected function getFilters(): ?array
+    {
+        return [
+            'today' => 'Today',
+            'week' => 'Last week',
+            'month' => 'Last month',
+            'year' => 'This year',
+        ];
     }
 }

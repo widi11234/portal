@@ -31,20 +31,39 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
+            $user = auth()->user();
+        
+            $icons = [];
+            $labels = [];
+        
+            if ($user) {
+                if ($user->hasAnyRole(['super_admin', 'manager', 'spv', 'panel_user'])) {
+                    $icons['esd'] = 'heroicon-o-bolt';
+                    $labels['esd'] = 'ESD';
+                }
+        
+                if ($user->hasAnyRole(['super_admin', 'manager', 'spv', 'panel_user'])) {
+                    $icons['utility'] = 'heroicon-o-adjustments-vertical';
+                    $labels['utility'] = 'Utility';
+                }
+        
+                if ($user->hasAnyRole(['super_admin', 'manager', 'spv'])) { // Excluding 'spv'
+                    $icons['dcc'] = 'heroicon-o-clipboard-document-list';
+                    $labels['dcc'] = 'Dcc';
+                }
+            }
+        
             $panelSwitch
                 //->modalWidth('sm')
                 ->modalHeading('Switch Portal')
                 ->slideOver()
-                ->icons([
-                    'admin' => 'heroicon-o-bolt',
-                    'utility' => 'heroicon-o-adjustments-vertical',
-                ])
-                ->iconSize(16)
-                ->labels([
-                    'admin' => 'ESD',
-                    'utility' => 'Utility'
-                ]);
-         
+                ->icons($icons)
+                ->iconSize(33)
+                ->labels($labels)
+                ->visible(fn (): bool => !empty($icons)); // Show the panel only if there are icons to display
         });
+        
+        
+        
     }
 }

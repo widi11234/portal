@@ -30,6 +30,7 @@ class UtilityPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->brandName('UTILITY PORTAL')
             ->id('utility')
             ->path('utility')
             ->login()
@@ -46,13 +47,6 @@ class UtilityPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                LatestMeasurement::class,
-                UserStatsOverview::class,
-                DailyPatrolChart::class,
-                DailyPatrolChart_2::class,
-                DailyPatrolChart_3::class,
-                DailyPatrolChart_4::class,
-                LatestPatrol::class,
             ])
             ->middleware([
                 EncryptCookies::class,

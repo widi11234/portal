@@ -55,4 +55,14 @@ class DailyPatrolChart extends ChartWidget
     {
         return 'bar';
     }
+
+    protected function getFilters(): ?array
+    {
+        return [
+            'today' => 'Today',
+            'week' => 'Last week',
+            'month' => 'Last month',
+            'year' => 'This year',
+        ];
+    }
 }

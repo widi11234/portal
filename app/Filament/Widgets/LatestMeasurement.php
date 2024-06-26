@@ -68,6 +68,7 @@ class LatestMeasurement extends BaseWidget
                         default => 'primary',
                     };
                 }),
+
             TextColumn::make('created_at')
                 ->label('Date')
                 ->date()
@@ -91,3 +92,4 @@ class LatestMeasurement extends BaseWidget
             ->columns($this->getTableColumns());
     }
 }
+

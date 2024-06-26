@@ -42,6 +42,7 @@
         "laravel/slack-notification-channel": "^3.2",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.8",
+        "leandrocfe/filament-apex-charts": "3.1",
         "livewire/livewire": "^3.4",
         "marjose123/filament-lockscreen": "2.0",
         "oriondevelops/filament-backup": "^1.0",
@@ -49,7 +50,9 @@
         "owenvoke/blade-fontawesome": "^2.6",
         "parallax/filament-comments": "^1.3",
         "psr/simple-cache": "2.0",
+        "pxlrbt/filament-activity-log": "^1.1",
         "pxlrbt/filament-excel": "^2.3",
+        "pxlrbt/filament-spotlight": "^1.2",
         "rappasoft/laravel-authentication-log": "^4.0",
         "rmsramos/activitylog": "^1.0",
         "saade/filament-fullcalendar": "3.0",
@@ -122,4 +125,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true
+    
 }

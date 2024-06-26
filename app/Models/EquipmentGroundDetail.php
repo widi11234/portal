@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use EightyNine\Approvals\Models\ApprovableModel;
 
-class EquipmentGroundDetail extends Model implements Auditable
+class EquipmentGroundDetail extends ApprovableModel implements Auditable
 {
     use HasFactory, LogsActivity, \OwenIt\Auditing\Auditable;
 
